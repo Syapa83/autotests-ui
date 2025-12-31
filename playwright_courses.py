@@ -1,4 +1,4 @@
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, expect
 
 # Открываем браузер с использованием Playwright
 with sync_playwright() as playwright:
@@ -33,7 +33,25 @@ with sync_playwright() as playwright:
 
     page.goto("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses")
 
-    page.wait_for_timeout(5000)
+    # Проверка заголовка "Courses"
+    courses_header = page.get_by_test_id('courses-list-toolbar-title-text')
+    expect(courses_header).to_be_visible()
+    expect(courses_header).to_have_text("Courses")
+
+    # Проверка наличия и текста блока "There is no results"
+    no_results_header = page.get_by_test_id('courses-list-empty-view-title-text')
+    expect(no_results_header).to_be_visible()
+    expect(no_results_header).to_have_text("There is no results")
+
+    # Проверка наличия и видимости иконки пустого блока
+    empty_view_icon = page.get_by_test_id('courses-list-empty-view-icon')
+    expect(empty_view_icon).to_be_visible()
+
+    # Проверка наличия и текста описания блока
+    description_text = page.get_by_test_id('courses-list-empty-view-description-text')
+    expect(description_text).to_be_visible()
+    expect(description_text).to_have_text("Results from the load test pipeline will be displayed here")
+
 
 
 
