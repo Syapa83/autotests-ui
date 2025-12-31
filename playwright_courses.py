@@ -2,13 +2,6 @@ from playwright.sync_api import sync_playwright
 
 # Открываем браузер с использованием Playwright
 with sync_playwright() as playwright:
-    browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context(storage_state="browser-state.json")  # Указываем файл с сохраненным состоянием
-    page = context.new_page()
-
-    page.goto("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/dashboard")
-
-    page.wait_for_timeout(5000)
 
     # Запускаем Chromium браузер в обычном режиме (не headless)
     browser = playwright.chromium.launch(headless=False)
@@ -33,3 +26,14 @@ with sync_playwright() as playwright:
 
     # Сохраняем состояние браузера (куки и localStorage) в файл для дальнейшего использования
     context.storage_state(path="browser-state.json")
+
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context(storage_state="browser-state.json")  # Указываем файл с сохраненным состоянием
+    page = context.new_page()
+
+    page.goto("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses")
+
+    page.wait_for_timeout(5000)
+
+
+
