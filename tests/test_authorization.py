@@ -3,9 +3,10 @@ from playwright.sync_api import sync_playwright, expect, Page
 
 @pytest.mark.regression  # Добавили маркировку regression
 @pytest.mark.authorization  # Добавили маркировку authorization
-def test_wrong_email_or_password_authorization(chromium_page: Page):  # Создаем тестовую функцию
-    chromium_page.goto("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/login")
-
+@pytest.mark.parametrize("email, password", [("user.name@gmail.com", "password"),
+                                             ("user.name@gmail.com", " "),
+                                             (" ", "password")])
+def test_wrong_email_or_password_authorization(chromium_page: Page, email: str, password: str):
     chromium_page.goto("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/login")
 
     email_input = chromium_page.get_by_test_id('login-form-email-input').locator('input')
