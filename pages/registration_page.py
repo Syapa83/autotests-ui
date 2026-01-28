@@ -25,7 +25,7 @@ class RegistrationPage(BasePage):
         expect(self.password_input).to_have_value(password)
 
     # Метод для нажатия на кнопку "Registration"
-    def click_login_button(self):
+    def click_registration_button(self):
         self.registration_button.click()
 
     # Метод для нажатия на ссылку "Login"
