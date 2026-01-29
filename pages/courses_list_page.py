@@ -1,5 +1,8 @@
 from playwright.sync_api import Page, expect
 from dataclasses import dataclass
+
+from components.navigation.navbar_component import NavbarComponent
+from components.navigation.sidebar_component import SidebarComponent
 from pages.base_page import BasePage
 
 @dataclass
@@ -34,6 +37,9 @@ class CoursesListPage(BasePage):
         self.empty_view_icon = page.get_by_test_id('courses-list-empty-view-icon')
         self.empty_view_title = page.get_by_test_id('courses-list-empty-view-title-text')
         self.empty_view_description = page.get_by_test_id('courses-list-empty-view-description-text')
+
+        self.sidebar = SidebarComponent(page)
+        self.navbar = NavbarComponent(page)
 
     def check_visible_courses_title(self):
         expect(self.courses_title).to_be_visible()

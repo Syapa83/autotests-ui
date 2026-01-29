@@ -9,44 +9,15 @@ from pages.create_course_page import CreateCoursePage
 
 @pytest.mark.courses
 @pytest.mark.regression
-def test_empty_courses_list(chromium_page_with_state):
-    page = chromium_page_with_state
-    page.goto("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/registration")
+def test_empty_courses_list(courses_list_page: CoursesListPage):
+    courses_list_page.visit("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses")
 
-    email_input = page.get_by_test_id('registration-form-email-input').locator('input')
-    email_input.fill('user.name@gmail.com')
+    courses_list_page.sidebar.check_visible()
+    courses_list_page.navbar.check_visible("username")
 
-    username_input = page.get_by_test_id('registration-form-username-input').locator('input')
-    username_input.fill('username')
-
-    password_input = page.get_by_test_id('registration-form-password-input').locator('input')
-    password_input.fill('password')
-
-    registration_button = page.get_by_test_id('registration-page-registration-button')
-    registration_button.click()
-
-    page = chromium_page_with_state
-    page.goto("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses")
-
-    # Проверка заголовка "Courses"
-    courses_header = page.get_by_test_id('courses-list-toolbar-title-text')
-    expect(courses_header).to_be_visible()
-    expect(courses_header).to_have_text("Courses")
-
-    # Проверка наличия и текста блока "There is no results"
-    no_results_header = page.get_by_test_id('courses-list-empty-view-title-text')
-    expect(no_results_header).to_be_visible()
-    expect(no_results_header).to_have_text("There is no results")
-
-    # Проверка наличия и видимости иконки пустого блока
-    empty_view_icon = page.get_by_test_id('courses-list-empty-view-icon')
-    expect(empty_view_icon).to_be_visible()
-
-    # Проверка наличия и текста описания блока
-    description_text = page.get_by_test_id('courses-list-empty-view-description-text')
-    expect(description_text).to_be_visible()
-    expect(description_text).to_have_text("Results from the load test pipeline will be displayed here")
-
+    courses_list_page.check_visible_courses_title()
+    courses_list_page.check_visible_empty_view()
+    courses_list_page.check_visible_create_course_button()
 
 def test_create_course(courses_list_page: CoursesListPage, create_course_page: CreateCoursePage):
     create_course_page.visit("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses/create")
