@@ -1,6 +1,9 @@
 import pytest
 from playwright.sync_api import sync_playwright, expect
 
+from pages.courses_list_page import CoursesListPage, CheckVisibleCourseCardParams
+
+
 @pytest.mark.courses
 @pytest.mark.regression
 def test_empty_courses_list(chromium_page_with_state):
@@ -40,3 +43,15 @@ def test_empty_courses_list(chromium_page_with_state):
     description_text = page.get_by_test_id('courses-list-empty-view-description-text')
     expect(description_text).to_be_visible()
     expect(description_text).to_have_text("Results from the load test pipeline will be displayed here")
+
+
+def test_course(courses_list_page: CoursesListPage):
+    courses_list_page.check_visible_course_card(
+        CheckVisibleCourseCardParams(
+            index=0,
+            title="Playwright",
+            max_score="10",
+            min_score="1",
+            estimated_time="2 weeks"
+        )
+    )
