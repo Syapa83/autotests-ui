@@ -1,6 +1,7 @@
 from playwright.sync_api import Page, expect
 
 from components.charts.chart_view_component import ChartViewComponent
+from components.dashboard.dashboard_toolbar_view_component import DashboardToolbarViewComponent
 from components.navigation.navbar_component import NavbarComponent
 from components.navigation.sidebar_component import SidebarComponent
 from pages.base_page import BasePage
@@ -17,3 +18,5 @@ class DashboardPage(BasePage):
 
         self.navbar = NavbarComponent(page)
         self.sidebar = SidebarComponent(page)
+
+        self.dashboard_title = DashboardToolbarViewComponent(page)
