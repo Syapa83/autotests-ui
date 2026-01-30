@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from components.navigation.navbar_component import NavbarComponent
 from components.navigation.sidebar_component import SidebarComponent
 from components.views.empty_view_component import EmptyViewComponent
+from elements.button import Button
 from pages.base_page import BasePage
 from components.courses.course_view_component import CourseViewComponent
 from components.courses.courses_list_toolbar_view_component import CoursesListToolbarViewComponent
@@ -27,9 +28,9 @@ class CoursesListPage(BasePage):
         self.course_view = CourseViewComponent(page)
 
         # Меню курса
-        self.course_menu_button = page.get_by_test_id('course-view-menu-button')
-        self.course_edit_menu_item = page.get_by_test_id('course-view-edit-menu-item')
-        self.course_delete_menu_item = page.get_by_test_id('course-view-delete-menu-item')
+        self.course_menu_button = Button(page, 'course-view-menu-button', 'Menu')
+        self.course_edit_menu_item = Button(page, 'course-view-edit-menu-item', 'Edit')
+        self.course_delete_menu_item = Button(page, 'course-view-delete-menu-item', 'Delete')
 
         # Пустой блок при отсутствии курсов
         self.empty_view = EmptyViewComponent(page, 'courses-list')
