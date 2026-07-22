@@ -1,5 +1,7 @@
 from playwright.sync_api import sync_playwright, Request, Response
 
+from tools.routes import AppRoute
+
 
 # Логирование запросов
 def log_request(request: Request):
@@ -21,7 +23,7 @@ with sync_playwright() as playwright:
     page.on("response", log_response)  # Ответ получен
 
     # Переходим на страницу входа
-    page.goto("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/login")
+    page.goto(AppRoute.LOGIN)
 
     # Задержка для завершения всех запросов
     page.wait_for_timeout(3000)
