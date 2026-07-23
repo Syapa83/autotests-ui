@@ -52,7 +52,6 @@ class Settings(BaseSettings):
         allure_results_dir.mkdir(exist_ok=True)
         browser_state_file.touch(exist_ok=True)
 
-
         return Settings(
             videos_dir=videos_dir,
             tracing_dir=tracing_dir,
