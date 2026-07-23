@@ -39,8 +39,6 @@ class Settings(BaseSettings):
     tracing_dir: DirectoryPath
     allure_results_dir: DirectoryPath
     browser_state_file: FilePath
-    os_info: str
-    python_version: str
 
     @classmethod
     def initialize(cls) -> Self:
@@ -60,8 +58,6 @@ class Settings(BaseSettings):
             tracing_dir=tracing_dir,
             allure_results_dir=allure_results_dir,
             browser_state_file=browser_state_file,
-            os_info=f'{platform.system()}, {platform.release()}',
-            python_version=platform.python_version(),
         )
 
     def get_base_url(self) -> str:
