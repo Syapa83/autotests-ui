@@ -7,5 +7,4 @@ from tools.allure.environment import create_allure_environment_file
 def save_allure_environment_file():
     # До начала автотестов ничего не делаем
     yield  # Запускаются автотесты...
-    # После завершения автотестов создаем файл environment.properties
     create_allure_environment_file()
