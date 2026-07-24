@@ -10,6 +10,9 @@ on:
       - main  # Запускать workflows, когда будет сделан pull request в ветку main
   workflow_dispatch:  # Добавляем возможность ручного запуска
 
+permissions:
+  contents: write
+
 # Определяем все шаги, которые должны быть выполнены в рамках работы с тестами
 jobs:
   run-tests:
@@ -23,7 +26,7 @@ jobs:
 
       # 2. Шаг для установки Python на виртуальной машине
       - name: Set up Python
-        uses: actions/setup-python@v4  # Используем GitHub Action для установки Python
+        uses: actions/setup-python@v5  # Используем GitHub Action для установки Python
         with:
           python-version: '3.13.4'
 
@@ -41,7 +44,7 @@ jobs:
 
       # 5. Шаг для сохранения результатов тестов как артефакт
       - name: Upload allure-results
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: allure-results  # Имя артефакта
@@ -62,10 +65,11 @@ jobs:
 
       # 2. Шаг для загрузки артефакта с результатами тестов
       - name: Download allure-results
-        uses: actions/download-artifact@v8  # Используем официальный Action для скачивания артефактов
+        uses: actions/download-artifact@v4  # Используем официальный Action для скачивания артефактов
         with:
           name: allure-results  # Имя артефакта, который мы загрузили в предыдущей джобе
           path: allure-results  # Путь, куда сохранить скачанные результаты
+
 
       - name: Generates Allure Report with history
         uses: simple-elf/allure-report-action@v1.16
@@ -73,6 +77,7 @@ jobs:
         with:
           allure_results: allure-results
           allure_history: allure-history
+          gh_pages: gh-pages
 
       - name: Deploy report to Github Pages
         if: always()  # Выполняется всегда, независимо от успеха других шагов
