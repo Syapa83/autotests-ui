@@ -42,13 +42,6 @@ class Settings(BaseSettings):
 
     @classmethod
     def initialize(cls) -> Self:
-        is_ci = os.getenv('CI', 'false').lower() == 'true'
-        is_headless_env = os.getenv('HEADLESS', 'true').lower() == 'true'
-        if is_ci:
-            headless = True
-        else:
-            headless = is_headless_env
-
         videos_dir = DirectoryPath("./videos")
         tracing_dir = DirectoryPath("./tracing")
         allure_results_dir = DirectoryPath("./allure-results")
@@ -64,7 +57,6 @@ class Settings(BaseSettings):
             tracing_dir=tracing_dir,
             allure_results_dir=allure_results_dir,
             browser_state_file=browser_state_file,
-            headless=headless,
         )
 
     def get_base_url(self) -> str:
