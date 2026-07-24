@@ -41,7 +41,7 @@ jobs:
 
       # 5. Шаг для сохранения результатов тестов как артефакт
       - name: Upload allure-results
-        uses: actions/upload-artifact@v4  # Используем официальный Action для загрузки артефактов
+        uses: actions/upload-artifact@v7  # Используем официальный Action для загрузки артефактов
         with:
           name: allure-results  # Имя артефакта
           path: allure-results  # Путь к папке с результатами
@@ -62,7 +62,7 @@ jobs:
 
       # 2. Шаг для загрузки артефакта с результатами тестов
       - name: Download allure-results
-        uses: actions/download-artifact@v4  # Используем официальный Action для скачивания артефактов
+        uses: actions/download-artifact@v8  # Используем официальный Action для скачивания артефактов
         with:
           name: allure-results  # Имя артефакта, который мы загрузили в предыдущей джобе
           path: allure-results  # Путь, куда сохранить скачанные результаты
