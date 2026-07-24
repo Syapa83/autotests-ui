@@ -41,11 +41,11 @@ jobs:
 
       # 5. Шаг для сохранения результатов тестов как артефакт
       - name: Upload allure-results
-        uses: actions/upload-artifact@v7  # Используем официальный Action для загрузки артефактов
+        uses: actions/upload-artifact@v7
+        if: always()
         with:
           name: allure-results  # Имя артефакта
           path: allure-results  # Путь к папке с результатами
-        if: always()
 
   publish-report:
     name: Publish report
@@ -68,7 +68,7 @@ jobs:
           path: allure-results  # Путь, куда сохранить скачанные результаты
 
       - name: Generates Allure Report with history
-        uses: simple-elf/allure-report-action@v1.13
+        uses: simple-elf/allure-report-action@master
         if: always()  # Всегда выполняем, независимо от успеха или неудачи предыдущих шагов
         with:
           allure_results: allure-results
