@@ -68,7 +68,7 @@ jobs:
           path: allure-results  # Путь, куда сохранить скачанные результаты
 
       - name: Generates Allure Report with history
-        uses: simple-elf/allure-report-action@v1.14
+        uses: simple-elf/allure-report-action@v1.14.0
         if: always()  # Всегда выполняем, независимо от успеха или неудачи предыдущих шагов
         with:
           allure_results: allure-results
