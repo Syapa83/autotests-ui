@@ -4,85 +4,71 @@ name: UI tests
 on:
   push:
     branches:
-      - main  # Запускать workflows, когда будет сделан коммит в ветку main
+      - main
   pull_request:
     branches:
-      - main  # Запускать workflows, когда будет сделан pull request в ветку main
-  workflow_dispatch:  # Добавляем возможность ручного запуска
+      - main
 
-permissions:
-  contents: write
-
-# Определяем все шаги, которые должны быть выполнены в рамках работы с тестами
 jobs:
   run-tests:
     name: Run tests
-    runs-on: ubuntu-latest  # Указываем, что тесты будут запускаться на последней версии Ubuntu
+    runs-on: ubuntu-latest
 
     steps:
-      # 1. Шаг, который будет клонировать ваш репозиторий на машину GitHub Actions
       - name: Check out repository
-        uses: actions/checkout@v4  # Используем GitHub Action для клонирования репозитория
+        uses: actions/checkout@v4
 
-      # 2. Шаг для установки Python на виртуальной машине
       - name: Set up Python
-        uses: actions/setup-python@v5  # Используем GitHub Action для установки Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.13.4'
 
-      # 3. Шаг для установки всех зависимостей проекта
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip  # Обновляем pip до последней версии
-          pip install -r requirements.txt  # Устанавливаем зависимости, указанные в requirements.txt
-          playwright install --with-deps  # Устанавливаем браузеры для Playwright (если они не установлены)
+          python -m pip install --upgrade pip 
+          pip install -r requirements.txt
+          playwright install --with-deps
 
-      # 4. Шаг для запуска тестов с использованием pytest и генерации отчётов Allure
       - name: Run Playwright tests with pytest and generate Allure results
         run: |
-          pytest -m regression --alluredir=allure-results --numprocesses 2  # Запускаем тесты, отмеченные как "regression", генерируем результаты для Allure
+          pytest -m regression --alluredir=allure-results --numprocesses 2
 
-      # 5. Шаг для сохранения результатов тестов как артефакт
       - name: Upload allure-results
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: allure-results  # Имя артефакта
-          path: allure-results  # Путь к папке с результатами
+          name: allure-results
+          path: allure-results
 
   publish-report:
-    name: Publish report
-    runs-on: ubuntu-latest
+    if: always()
     needs: [ run-tests ]
+    runs-on: ubuntu-latest
 
     steps:
-      # 1. Шаг для клонирования репозитория (нужен для доступа к ветке gh-pages)
       - name: Check out repository
         uses: actions/checkout@v4
         with:
           ref: gh-pages
           path: gh-pages
 
-      # 2. Шаг для загрузки артефакта с результатами тестов
       - name: Download allure-results
-        uses: actions/download-artifact@v4  # Используем официальный Action для скачивания артефактов
+        uses: actions/download-artifact@v4
         with:
-          name: allure-results  # Имя артефакта, который мы загрузили в предыдущей джобе
-          path: allure-results  # Путь, куда сохранить скачанные результаты
-
+          name: allure-results
+          path: allure-results
 
       - name: Generates Allure Report with history
         uses: simple-elf/allure-report-action@master
-        if: always()  # Всегда выполняем, независимо от успеха или неудачи предыдущих шагов
+        if: always()
         with:
           allure_results: allure-results
           allure_history: allure-history
-          gh_pages: gh-pages
 
       - name: Deploy report to Github Pages
-        if: always()  # Выполняется всегда, независимо от успеха других шагов
-        uses: peaceiris/actions-gh-pages@v4  # Используем GitHub Action для публикации отчёта на GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}  # Токен для аутентификации на GitHub
-          publish_branch: gh-pages  # Указываем, что отчёт будет опубликован в ветке gh-pages
-          publish_dir: allure-history  # Указываем папку, которая будет опубликована на GitHub Pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
